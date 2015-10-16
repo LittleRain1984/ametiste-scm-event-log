@@ -17,7 +17,7 @@ ext {
                     "org.ametiste.scm:scm-messages-mongo:${ametisteScmMessagingLibVersion}"
             ],
             ametisteScmCoordinatorEureka:
-                    "org.ametiste.scm:scm-coordinator-spring-cloud-eureka:${ametisteScmCoordinatorVersion}",
+                    "org.ametiste.scm:scm-coordination-spring-cloud-eureka:${ametisteScmCoordinatorVersion}",
             javaxServlet    : "javax.servlet:javax.servlet-api:${javaxServletVersion}",
             slf4j           : [
                     "org.slf4j:slf4j-api:${slf4jVersion}",
@@ -31,7 +31,8 @@ ext {
                     "org.mockito:mockito-all:1.10.19"
             ],
             spockSpring     : "org.spockframework:spock-spring:${spockVersion}",
-            springBootActuator : "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}",
+            springBootActuator : "org.springframework.boot:spring-boot-starter-actuator:",
+            springBootMongo : "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}",
             springBootTest  : [
                     "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
                     "org.springframework:spring-context:${springVersion}",

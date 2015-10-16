@@ -1,0 +1,49 @@
+description = 'SCM Event Log Service'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'groovy'
+apply from: "https://raw.githubusercontent.com/ametiste-oss/ametiste-bintray-gradle/master/bintray.gradle"
+
+jar {
+    manifest.attributes['Implementation-Title'] = project.name
+    manifest.attributes['Implementation-Version'] = project.version
+    manifest.attributes['Implementation-Git-Revision'] = "[unavailable]"
+}
+
+jar.manifest.writeTo( "$buildDir/resources/main/META-INF/MANIFEST.MF" )
+
+springBoot {
+    backupSource = false
+}
+
+bintrayUpload.dependsOn build
+
+configurations {
+    all*.exclude group: '', module: 'servlet-api'
+    all*.exclude group: '', module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+    compile libraries.springBootWeb,
+            libraries.springBootActuator,
+            libraries.springBootMongo,
+            libraries.javaxServlet,
+            libraries.commonLang3,
+            libraries.slf4j
+
+    compile libraries.ametisteScmMessagingComponents,
+            libraries.ametisteScmCoordinatorEureka
+
+    testCompile libraries.spock,
+            libraries.spockSpring,
+            libraries.springBootTest
+}

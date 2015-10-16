@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: scm-event-log
+  data.mongodb:
+    database: eventLog
+
+org.ametiste.scm.log:
+  sender.client:
+    connect-timeout: 1000
+    read-timeout: 1000
+  store:
+    flush-period: 1000
+    allowCreateIndex: true
+  replay:
+    bulk-size: 100
+  mongo:
+    autoReconnectRetry: true
+    connectionsPerHost: 50
+    threadsAllowedToBlockForConnectionMultiplier: 5
+    writeConcern: ACKNOWLEDGED
