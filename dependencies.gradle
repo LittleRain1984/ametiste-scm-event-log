@@ -1,0 +1,42 @@
+ext {
+    commonLang3Version = '3.4'
+    ametisteScmCoordinatorVersion = '0.1.0-1-RC'
+    ametisteScmMessagingLibVersion = '0.1.0-2-RC'
+    groovyVersion = '2.4.1'
+    javaxServletVersion = '3.1.0'
+    slf4jVersion = '1.7.12'
+    spockVersion = '1.0-groovy-2.4'
+    springVersion = '4.2.1.RELEASE'
+    springBootVersion = '1.2.6.RELEASE'
+
+    libraries = [
+            commonLang3     : "org.apache.commons:commons-lang3:${commonLang3Version}",
+            ametisteScmMessagingComponents : [
+                    "org.ametiste.scm:scm-message-sender:${ametisteScmMessagingLibVersion}",
+                    "org.ametiste.scm:scm-message-receiver:${ametisteScmMessagingLibVersion}",
+                    "org.ametiste.scm:scm-messages-mongo:${ametisteScmMessagingLibVersion}"
+            ],
+            ametisteScmCoordinatorEureka:
+                    "org.ametiste.scm:scm-coordinator-spring-cloud-eureka:${ametisteScmCoordinatorVersion}",
+            javaxServlet    : "javax.servlet:javax.servlet-api:${javaxServletVersion}",
+            slf4j           : [
+                    "org.slf4j:slf4j-api:${slf4jVersion}",
+                    "org.slf4j:slf4j-log4j12:${slf4jVersion}"
+            ],
+            spock           : [
+                    "org.codehaus.groovy:groovy-all:${groovyVersion}",
+                    "org.spockframework:spock-core:${spockVersion}",
+                    "cglib:cglib-nodep:3.1",
+                    "org.objenesis:objenesis:2.1",
+                    "org.mockito:mockito-all:1.10.19"
+            ],
+            spockSpring     : "org.spockframework:spock-spring:${spockVersion}",
+            springBootActuator : "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}",
+            springBootTest  : [
+                    "org.springframework.boot:spring-boot-starter-web:${springBootVersion}",
+                    "org.springframework:spring-context:${springVersion}",
+                    "org.springframework:spring-test:${springVersion}"
+            ],
+            springBootWeb   : "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    ]
+}
