@@ -57,7 +57,7 @@ Installation process include next steps:
   2. build artifact from sources:<br/>project based on Gradle, so to build execute next command from project root directory:<br/><code>gradle build</code>
 2. Deploy jar file to the target server.
 3. Configure properties for Broker (see [here](#configuration-properties)).
-4. Start service by executing:<br/><code>java -jar dph-scm-event-log-[version].jar</code>.
+4. Start service by executing:<br/><code>java -jar scm-event-log-[version].jar</code>.
 
 #### Requirements
 - JDK 1.8 or higher.
