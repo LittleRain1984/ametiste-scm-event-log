@@ -626,10 +626,28 @@ HTTP/1.1 200 OK
 `TODO: add test description`
 
 ### Event Logging Feature
+
+Ferture provides mechanism to save all incoming events to persistant storage (document oriented database).
+Below placed scheme of this process:
+
 ![log-logging-diagram](https://cloud.githubusercontent.com/assets/11256858/10718796/69d38304-7b83-11e5-99b5-3a96a90415ab.png)
 
+All process can be separate on two parts:
+- receiving incoming events;
+- saving accumulated events to external storage.
+
+Separation allows increase throughput (fast processing of incoming requests) and reduce number of connections to exteral storage (bulk write to db).
+
+First part (red arrows on scheme) contains components from Messaging Library and event listener that handle all events and store it in *EventLogger*. On this request processing is complete.
+
+Second part (blue arrows on scheme) handled by *Scheduler* that invoke store process by some time pattern (in our case fixed time period). All logic of storing contain EventLogger service.
+
+Feature also contains Coordination Library component for subscribing to event broadcast.
+
 ### Event Informer Feature
+
 ![log-informer-diagram](https://cloud.githubusercontent.com/assets/11256858/10718803/83fe9192-7b83-11e5-854c-65a78d53e7b6.png)
 
 ### Event Informer Feature
+
 ![log-replayer-diagram](https://cloud.githubusercontent.com/assets/11256858/10718807/93cd1e86-7b83-11e5-952d-2b0721871199.png)
