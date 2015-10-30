@@ -646,8 +646,23 @@ Feature also contains Coordination Library component for subscribing to event br
 
 ### Event Informer Feature
 
-![log-informer-diagram](https://cloud.githubusercontent.com/assets/11256858/10718803/83fe9192-7b83-11e5-854c-65a78d53e7b6.png)
+Feature provides information service - take information about events stored in SCM system. Its provide [HTTP API](#operations-on-event-informer) with *EventInformerController* and *EventInformer* service.
 
-### Event Informer Feature
+![log-informer-diagram](https://cloud.githubusercontent.com/assets/11256858/10844023/5cc8141a-7f05-11e5-8833-deadfcfa983f.png)
+
+### Event Replayer Feature
+
+Feature provides functionality to organize management and execution of replay tasks.
 
 ![log-replayer-diagram](https://cloud.githubusercontent.com/assets/11256858/10718807/93cd1e86-7b83-11e5-952d-2b0721871199.png)
+
+User submit task with provided [API](#operations-on-event-replayer) and track progress of execution. Event Log contains *ExecutorService* that take tasks one by one and execute.
+
+Replay task contains next steps:
+- get cursor to set of data need to replay from DB;
+- wrap events with transport info;
+- send bulk of messages to target.
+
+Replayer add itself to exclude list. It save Log from duplication of events when we replay through Event Broker.
+URL constract from host name, local port and receiver context path.
+Replay parameters set via application properties.
