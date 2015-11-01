@@ -623,7 +623,6 @@ HTTP/1.1 200 OK
 ```
 
 ## Logic of operation
-`TODO: add test description`
 
 ### Event Logging Feature
 
