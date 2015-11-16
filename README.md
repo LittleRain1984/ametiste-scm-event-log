@@ -1,5 +1,7 @@
 # SCM Event Log Service
 
+Link to umbrella project: [>> System's Configuration Management <<](https://github.com/ametiste-oss/ametiste-scm)
+
 ## Build Status
 [![Build Status](https://travis-ci.org/ametiste-oss/ametiste-scm-event-log.svg?branch=master)](https://travis-ci.org/ametiste-oss/ametiste-scm-event-log)
 [![Codacy Badge](https://api.codacy.com/project/badge/370488f10c844437b119002610b5199b)](https://www.codacy.com/app/Ametiste-OSS/ametiste-scm-event-log)
@@ -623,7 +625,6 @@ HTTP/1.1 200 OK
 ```
 
 ## Logic of operation
-`TODO: add test description`
 
 ### Event Logging Feature
 
