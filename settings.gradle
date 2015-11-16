@@ -1,3 +1,5 @@
 rootProject.name = "ametiste-scm-event-log"
 
 include 'scm-event-log'
+include 'scm-event-log-core'
+

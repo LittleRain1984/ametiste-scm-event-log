@@ -1,0 +1,12 @@
+description = 'SCM Event Log Core'
+
+apply plugin: 'groovy'
+apply from: "https://raw.githubusercontent.com/ametiste-oss/ametiste-bintray-gradle/master/bintray.gradle"
+
+dependencies {
+
+    compile libraries.commonLang3,
+            libraries.springBootMongo
+
+    compile libraries.ametisteScmMessagingComponents
+}

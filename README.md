@@ -456,7 +456,7 @@ Request has one path variable parameter:
 |`id`|UUID|Replay task identifier.|
 
 ##### Response Format
-Response return **200 OK** status and JSON object with status (*see org.ametiste.scm.log.data.replay.ReplayTaskStatus*). If task with this id not exists service returns **404 NOT FOUND** code and *reason* in body.
+Response return **200 OK** status and JSON object with status (*see ReplayTaskStatus*). If task with this id not exists service returns **404 NOT FOUND** code and *reason* in body.
 
 ##### Example
 Request:

@@ -33,9 +33,10 @@ configurations {
 }
 
 dependencies {
+    compile project(path: ':scm-event-log-core')
+
     compile libraries.springBootWeb,
             libraries.springBootActuator,
-            libraries.springBootMongo,
             libraries.javaxServlet,
             libraries.commonLang3,
             libraries.slf4j
