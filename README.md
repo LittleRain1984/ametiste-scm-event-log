@@ -117,7 +117,7 @@ This set of operation provide access to events stored in storage.
 ##### Overview
 Retrieve count of all stored events in persistent.
 ```
-http://{event log host:port}/info/event/count
+http://{event log host:port}/informer/event/count
 ```
 
 ##### Request Headers
@@ -132,7 +132,7 @@ This operation returns **200 OK** status and *long* number that represent number
 ##### Example
 Request:
 ```
-http://localhost/info/event/count HTTP/1.1
+http://localhost/informer/event/count HTTP/1.1
 ```
 Response:
 ```
@@ -146,7 +146,7 @@ HTTP/1.1 200 OK
 ##### Overview
 Retrieve event information by event id.
 ```
-http://{event log host:port}/info/event/{id}
+http://{event log host:port}/informer/event/{id}
 ```
 
 ##### Request Headers
@@ -172,7 +172,7 @@ Event log response with **200 OK** status in any case. When event not founded Lo
 ##### Example
 Request:
 ```
-http://localhost/info/event/c234289c-5453-4c2c-8d95-7a32ee4124ae
+http://localhost/informer/event/c234289c-5453-4c2c-8d95-7a32ee4124ae
 ```
 Response:
 ```java
@@ -199,7 +199,7 @@ HTTP/1.1 200 OK
 ##### Overview
 Retrieve last N events registered in Event Log.
 ```
-http://{event log host:port}/info/event/last?count={event_count}[&sort={ASC|DESC}]
+http://{event log host:port}/informer/event/last?count={event_count}[&sort={ASC|DESC}]
 ```
 
 ##### Request Headers
@@ -222,7 +222,7 @@ Response always return 200 OK status. If now events to return response body will
 ##### Example
 Request:
 ```
-http://{event log host:port}/info/event/last?count=3&sort=asc
+http://{event log host:port}/informer/event/last?count=3&sort=asc
 ```
 Response:
 ```java
@@ -266,7 +266,7 @@ HTTP/1.1 200 OK
 ##### Overview
 Retrieve events registered in Event Log for specified time period.
 ```
-http://{event log host:port}/info/event?[start={start_timestamp}&end={end_timestamp}
+http://{event log host:port}/informer/event?[start={start_timestamp}&end={end_timestamp}
                                          &page={page_number}&size={page_size}&sort={ASC|DESC}]
 ```
 
@@ -291,7 +291,7 @@ Response always return **200 OK** status.
 ##### Example
 Request:
 ```
-http://{event log host:port}/info/event?page=0&size=50
+http://{event log host:port}/informer/event?page=0&size=50
 ```
 Response:
 ```java
