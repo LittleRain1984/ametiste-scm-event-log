@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Controller provides default value almost for all requests parameters. It makes easier handle default requests.
  */
 @RestController
-@RequestMapping("/info")
+@RequestMapping("/informer")
 public class EventInfoController {
 
     public static final String DEFAULT_PAGE_SIZE = "50";
