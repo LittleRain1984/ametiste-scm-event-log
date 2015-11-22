@@ -1,5 +1,6 @@
 package org.ametiste.scm.log.persistent
 
+import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
 import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
 import org.ametiste.scm.messaging.data.event.Event
@@ -8,14 +9,19 @@ import org.ametiste.scm.messaging.data.mongo.event.EventDocument
 import org.ametiste.scm.messaging.data.mongo.event.InstanceStartupEventDocument
 import org.ametiste.scm.messaging.data.mongo.event.factory.DefaultEventToDocumentConverterMapFactory
 import org.ametiste.scm.messaging.data.mongo.event.factory.EventToDocumentConverterMapFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.util.CloseableIterator
 import spock.lang.Specification
 
 import static org.ametiste.scm.messaging.data.EventComparator.equals
 
 class MongoEventDAOTest extends Specification {
 
+    private static final long COLLECTION_COUNT = 5L;
     private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
 
     private MongoEventDAO eventDAO;
@@ -23,10 +29,17 @@ class MongoEventDAOTest extends Specification {
     private DBCollection dbCollection;
     private EventToDocumentConverterMapFactory factory = new DefaultEventToDocumentConverterMapFactory();
 
+    /**
+     * Init mocks and count() method behavior for target collection.
+     */
     def setup() {
         dbCollection = Mock(DBCollection.class)
         mongoOperations = Mock(MongoOperations.class)
         eventDAO = new MongoEventDAO(mongoOperations, factory);
+
+        dbCollection.count() >> COLLECTION_COUNT
+        mongoOperations.getCollectionName(EventDocument.class) >> "evenDocument"
+        mongoOperations.getCollection(_ as String) >> dbCollection
     }
 
     def "constructor arguments validation"() {
@@ -168,18 +181,119 @@ class MongoEventDAOTest extends Specification {
         equals(returnedEvent, event)
     }
 
-    def "test count()"() {
-        def count = 5L
+    def "findAll return correct iterator"() {
+        when: "invoke findAll method"
+        CloseableIterator<Event> iterator = eventDAO.findAll();
 
-        when:
+        then: "expect take valid iterator"
+        iterator != null
+
+        and: "with returned from mongoOperation stream for query with default sort by timestamp"
+        1 * mongoOperations.stream(_ as Query, _ as Class) >> { Query query, Class documentClass ->
+
+            assert documentClass == EventDocument
+            assert query.getSortObject().get("timestamp") == 1
+
+            return Mock(CloseableIterator.class)
+        }
+    }
+
+    def "findAll with date range return correct iterator"() {
+        given: "time range"
+        long from = 100
+        long to = 200
+
+        when: "invoke findAll method"
+        CloseableIterator<Event> iterator = eventDAO.findAll(from, to);
+
+        then: "expect take valid iterator"
+        iterator != null
+
+        and: "with returned from mongoOperation stream for query with timestamp range"
+        1 * mongoOperations.stream(_ as Query, _ as Class) >> { Query query, Class documentClass ->
+
+            assert documentClass == EventDocument
+            assert query.getSortObject().get("timestamp") == 1
+
+            BasicDBObject dateQuery = (BasicDBObject)query.getQueryObject().get("timestamp")
+            assert dateQuery.size() == 2
+            assert dateQuery.get('$gte') == from
+            assert dateQuery.get('$lte') == to
+
+            return Mock(CloseableIterator.class)
+        }
+    }
+
+    def "findAll method with pageable parameter"() {
+        given: "pageable parameter"
+        Pageable parameter = new PageRequest(5, 50)
+
+        when: "invoke findAll method"
+        Page<Event> page = eventDAO.findAll(parameter)
+
+        then: "mongoOperations return empty collection"
+        1 * mongoOperations.find(_ as Query, _ as Class) >> Collections.emptyList()
+
+        and: "event dao return valid page without content"
+        page != null
+        !page.hasContent()
+    }
+
+    def "findAll with pageable parameter and time range"() {
+        given: "time range and pageable parameter"
+        long from = 100
+        long to = 200
+        Pageable parameter = new PageRequest(5, 50)
+
+        when: "invoke findAll method"
+        Page<Event> page = eventDAO.findAll(from, to, parameter)
+
+        then: "mongoOperations return empty collection"
+        1 * mongoOperations.find(_ as Query, _ as Class) >> Collections.emptyList()
+
+        and: "event dao return valid page without content"
+        page != null
+        !page.hasContent()
+    }
+
+    def "count for target collection"() {
+        when: "get count for target collection"
         def result = eventDAO.count()
 
-        then:
-        dbCollection.count() >> count
-        mongoOperations.getCollectionName(EventDocument.class) >> "evenDocument"
-        mongoOperations.getCollection(_ as String) >> dbCollection
-
-        and:
-        result == count
+        then: "take expected count"
+        result == COLLECTION_COUNT
     }
+
+    def "throw exception when try map unknown class"() {
+        given: "some unknown single event instance and collection of them"
+        Event event = new SomeEvent()
+        Collection<Event> allEventsUnknown = Arrays.asList(event, event)
+        Collection<Event> partOfEventsUnknown = Arrays.asList(event, EVENT_GENERATOR.generate())
+
+        when: "try insert unknown event"
+        eventDAO.insert(event as SomeEvent)
+
+        then: "expect IllegalArgumentException thrown"
+        thrown(IllegalArgumentException.class)
+
+        when: "try insert collection of unknown events"
+        eventDAO.insert(allEventsUnknown)
+
+        then: "expect IllegalArgumentException thrown"
+        thrown(IllegalArgumentException.class)
+
+        when: "try insert collection with only part of unknown events"
+        eventDAO.insert(partOfEventsUnknown)
+
+        then: "expect no exception thrown"
+        noExceptionThrown()
+
+        when: "try save collection with only part of unknown events"
+        eventDAO.save(partOfEventsUnknown)
+
+        then: "expect no exception thrown"
+        noExceptionThrown()
+    }
+
+    class SomeEvent extends Event {}
 }

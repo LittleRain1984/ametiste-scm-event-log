@@ -72,7 +72,7 @@ public class MongoEventDAO implements EventDAO {
     @Override
     public Collection<Event> save(Collection<Event> entities) {
         isTrue(entities != null, "The given collection of entities must not be null!");
-        entities.stream().map(this::convert).forEach(mongoOperations::save);
+        convert(entities).stream().forEach(mongoOperations::save);
         return entities;
     }
 
