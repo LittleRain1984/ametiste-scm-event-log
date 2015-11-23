@@ -268,7 +268,7 @@ class MongoEventDAOTest extends Specification {
         given: "some unknown single event instance and collection of them"
         Event event = new SomeEvent()
         Collection<Event> allEventsUnknown = Arrays.asList(event, event)
-        Collection<Event> partOfEventsUnknown = Arrays.asList(event, EVENT_GENERATOR.generate())
+        Collection<Event> partOfEventsUnknown = Arrays.asList(event, EVENT_GENERATOR.generate(), null)
 
         when: "try insert unknown event"
         eventDAO.insert(event as SomeEvent)

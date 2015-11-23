@@ -141,6 +141,7 @@ public class MongoEventDAO implements EventDAO {
 
     private Collection<EventDocument> convert(Collection<Event> events) {
         List<EventDocument> docs = events.stream()
+                .filter(Objects::nonNull)
                 .filter(event -> converterMap.containsKey(event.getClass()))
                 .map(e -> converterMap.get(e.getClass()).apply(e))
                 .collect(Collectors.toList());
