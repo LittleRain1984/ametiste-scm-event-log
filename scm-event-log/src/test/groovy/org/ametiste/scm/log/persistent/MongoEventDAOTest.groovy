@@ -1,5 +1,6 @@
 package org.ametiste.scm.log.persistent
 
+import com.mongodb.BasicDBObject
 import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import com.mongodb.DBCollection
 import org.ametiste.scm.messaging.data.event.Event
@@ -20,9 +21,9 @@ import static org.ametiste.scm.messaging.data.EventComparator.equals
 
 class MongoEventDAOTest extends Specification {
 
-    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
     private static final long COLLECTION_COUNT = 5L;
-    private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
+    
+    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
 
     private MongoEventDAO eventDAO;
     private MongoOperations mongoOperations;
@@ -147,7 +148,7 @@ class MongoEventDAOTest extends Specification {
 
     def "findOne argument validation"() {
         given: "some event"
-        InstanceStartupEvent event = EVENT_GENERATOR.generate()
+        InstanceLifecycleEvent event = EVENT_GENERATOR.generate()
 
         when: "call method with not initialized argument"
         eventDAO.findOne(null)

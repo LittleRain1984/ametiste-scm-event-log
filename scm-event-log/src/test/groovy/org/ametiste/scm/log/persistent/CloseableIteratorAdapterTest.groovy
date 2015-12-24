@@ -1,7 +1,8 @@
 package org.ametiste.scm.log.persistent
-import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
+
+import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import org.ametiste.scm.messaging.data.event.Event
-import org.ametiste.scm.messaging.data.mongo.event.InstanceStartupEventDocument
+import org.ametiste.scm.messaging.data.mongo.event.InstanceLifecycleEventDocument
 import org.ametiste.scm.messaging.data.mongo.event.factory.DefaultEventToDocumentConverterMapFactory
 import org.springframework.core.convert.converter.Converter
 import org.springframework.data.mongodb.core.MongoOperations
@@ -65,6 +66,6 @@ class CloseableIteratorAdapterTest extends Specification {
         iterator.next()
 
         then: "iterator next method invokes too"
-        1 * mockIterator.next() >> new InstanceStartupEventDocument(new InstanceStartupEventGenerator().generate())
+        1 * mockIterator.next() >> new InstanceLifecycleEventDocument(new InstanceLifecycleEventGenerator().generate())
     }
 }
