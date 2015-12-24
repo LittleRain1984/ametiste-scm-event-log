@@ -1,6 +1,6 @@
 package org.ametiste.scm.messaging.data;
 
-import org.ametiste.scm.messaging.data.event.InstanceStartupEvent;
+import org.ametiste.scm.messaging.data.event.InstanceLifecycleEvent;
 
 /**
  * Utility class that contains comparator for event objects.
@@ -9,7 +9,7 @@ public class EventComparator {
 
     private EventComparator() {}
 
-    public static boolean equals(InstanceStartupEvent tested, InstanceStartupEvent original) {
+    public static boolean equals(InstanceLifecycleEvent tested, InstanceLifecycleEvent original) {
         return tested.getId().equals(original.getId()) &&
                 tested.getTimestamp() == original.getTimestamp() &&
                 tested.getInstanceId().equals(original.getInstanceId()) &&

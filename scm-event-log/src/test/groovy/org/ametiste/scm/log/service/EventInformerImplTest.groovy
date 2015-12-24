@@ -1,6 +1,6 @@
 package org.ametiste.scm.log.service
 
-import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
+import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import org.ametiste.scm.log.persistent.EventDAO
 import org.ametiste.scm.messaging.data.event.Event
 import org.springframework.data.domain.PageImpl
@@ -12,7 +12,7 @@ import static org.ametiste.scm.messaging.data.EventComparator.equals
 
 class EventInformerImplTest extends Specification {
 
-    private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
+    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
 
     private EventInformer eventInformer;
     private EventDAO eventDAO;

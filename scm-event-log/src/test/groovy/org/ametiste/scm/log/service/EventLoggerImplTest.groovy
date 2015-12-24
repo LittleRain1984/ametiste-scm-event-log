@@ -1,14 +1,14 @@
 package org.ametiste.scm.log.service
 
-import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
+import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import org.ametiste.scm.log.persistent.EventDAO
 import org.ametiste.scm.messaging.data.event.Event
-import org.ametiste.scm.messaging.data.event.InstanceStartupEvent
+import org.ametiste.scm.messaging.data.event.InstanceLifecycleEvent
 import spock.lang.Specification
 
 class EventLoggerImplTest extends Specification {
 
-    private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
+    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
 
     private EventLogger eventLogger;
     private EventDAO eventDAO;
@@ -20,7 +20,7 @@ class EventLoggerImplTest extends Specification {
 
     def "should store event"() {
         given:
-        InstanceStartupEvent event = EVENT_GENERATOR.generate()
+        InstanceLifecycleEvent event = EVENT_GENERATOR.generate()
 
         when: "store event and flush"
         eventLogger.store(event)

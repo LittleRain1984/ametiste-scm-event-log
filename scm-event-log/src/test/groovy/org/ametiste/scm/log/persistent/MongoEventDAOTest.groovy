@@ -1,11 +1,11 @@
 package org.ametiste.scm.log.persistent
 
-import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
+import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import com.mongodb.DBCollection
 import org.ametiste.scm.messaging.data.event.Event
-import org.ametiste.scm.messaging.data.event.InstanceStartupEvent
+import org.ametiste.scm.messaging.data.event.InstanceLifecycleEvent
 import org.ametiste.scm.messaging.data.mongo.event.EventDocument
-import org.ametiste.scm.messaging.data.mongo.event.InstanceStartupEventDocument
+import org.ametiste.scm.messaging.data.mongo.event.InstanceLifecycleEventDocument
 import org.ametiste.scm.messaging.data.mongo.event.factory.DefaultEventToDocumentConverterMapFactory
 import org.ametiste.scm.messaging.data.mongo.event.factory.EventToDocumentConverterMapFactory
 import org.springframework.data.mongodb.core.MongoOperations
@@ -16,7 +16,7 @@ import static org.ametiste.scm.messaging.data.EventComparator.equals
 
 class MongoEventDAOTest extends Specification {
 
-    private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
+    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
 
     private MongoEventDAO eventDAO;
     private MongoOperations mongoOperations;
@@ -71,13 +71,13 @@ class MongoEventDAOTest extends Specification {
 
     def "should find correct event by id"() {
         given:
-        InstanceStartupEvent event = EVENT_GENERATOR.generate()
+        InstanceLifecycleEvent event = EVENT_GENERATOR.generate()
 
         when:
         Event returnedEvent = eventDAO.findOne(event.getId())
 
         then:
-        mongoOperations.findById(_ as UUID, EventDocument.class) >> { new InstanceStartupEventDocument(event) }
+        mongoOperations.findById(_ as UUID, EventDocument.class) >> { new InstanceLifecycleEventDocument(event) }
 
         and:
         equals(returnedEvent, event)
@@ -91,7 +91,7 @@ class MongoEventDAOTest extends Specification {
 
         then:
         dbCollection.count() >> count
-        mongoOperations.getCollectionName(EventDocument.class) >> "evenDocument"
+        mongoOperations.getCollectionName(EventDocument.class) >> "eventDocument"
         mongoOperations.getCollection(_ as String) >> dbCollection
 
         and:

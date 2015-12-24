@@ -2,7 +2,7 @@ package org.ametiste.scm.log.service
 
 import org.ametiste.scm.log.persistent.EventDAO
 import org.ametiste.scm.log.util.EventReceiverURLBuilder
-import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
+import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import org.ametiste.scm.messaging.sender.EventSenderMock
 import org.ametiste.scm.log.data.replay.ReplayTaskStatus
 import org.ametiste.scm.messaging.data.event.Event
@@ -15,7 +15,7 @@ class EventReplayerImplTest extends Specification {
 
     public static final int BULK_SIZE = 2;
 
-    private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
+    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
 
     private EventDAO eventDAO;
     private EventSender eventSender;
