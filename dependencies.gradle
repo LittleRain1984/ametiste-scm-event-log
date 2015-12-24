@@ -1,7 +1,7 @@
 ext {
     commonLang3Version = '3.4'
-    ametisteScmCoordinatorVersion = '0.1.0-1-RC'
-    ametisteScmMessagingLibVersion = '0.1.0-2-RC'
+    ametisteScmCoordinatorVersion = '0.1.0-r1-RC'
+    ametisteScmMessagingLibVersion = '0.1.1-RELEASE'
     groovyVersion = '2.4.1'
     javaxServletVersion = '3.1.0'
     slf4jVersion = '1.7.12'

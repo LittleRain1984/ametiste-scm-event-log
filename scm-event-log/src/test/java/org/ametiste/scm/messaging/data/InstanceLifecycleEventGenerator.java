@@ -1,17 +1,18 @@
 package org.ametiste.scm.messaging.data;
 
 import org.ametiste.scm.messaging.data.event.Event;
-import org.ametiste.scm.messaging.data.event.InstanceStartupEvent;
+import org.ametiste.scm.messaging.data.event.InstanceLifecycleEvent;
 
 import java.net.URI;
-import java.util.*;
+import java.util.Collection;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * Generate {@code InstanceStartupEvent} objects for testing needs.
  */
-public class InstanceStartupEventGenerator {
+public class InstanceLifecycleEventGenerator {
 
     public static final String[] DEFAULT_INSTANCE_IDS = { "org.monitor", "IFTG", "global.peer" };
     public static final String[] DEFAULT_VERSIONS = { "0.10.0", "0.2.6.RELEASE", "0.1.5-r3-RC" };
@@ -26,14 +27,14 @@ public class InstanceStartupEventGenerator {
     private final String[] nodeIds;
     private final URI[] uris;
 
-    public InstanceStartupEventGenerator() {
+    public InstanceLifecycleEventGenerator() {
         this(null, null, null, null);
     }
 
-    public InstanceStartupEventGenerator(Collection<String> instanceIds,
-                                         Collection<String> versions,
-                                         Collection<String> nodeIds,
-                                         Collection<URI> uris) {
+    public InstanceLifecycleEventGenerator(Collection<String> instanceIds,
+                                           Collection<String> versions,
+                                           Collection<String> nodeIds,
+                                           Collection<URI> uris) {
         if (instanceIds == null) {
             this.instanceIds = DEFAULT_INSTANCE_IDS;
         } else {
@@ -59,12 +60,13 @@ public class InstanceStartupEventGenerator {
         }
     }
 
-    public InstanceStartupEvent generate() {
-        return InstanceStartupEvent.builder()
-                .addInstanceId(instanceIds[RANDOM.nextInt(instanceIds.length)])
-                .addVersion(versions[RANDOM.nextInt(versions.length)])
-                .addNodeId(nodeIds[RANDOM.nextInt(nodeIds.length)])
-                .addUri(uris[RANDOM.nextInt(uris.length)])
+    public InstanceLifecycleEvent generate() {
+        return InstanceLifecycleEvent.builder()
+                .type(InstanceLifecycleEvent.Type.values()[RANDOM.nextInt(InstanceLifecycleEvent.Type.values().length)])
+                .instanceId(instanceIds[RANDOM.nextInt(instanceIds.length)])
+                .version(versions[RANDOM.nextInt(versions.length)])
+                .nodeId(nodeIds[RANDOM.nextInt(nodeIds.length)])
+                .uri(uris[RANDOM.nextInt(uris.length)])
                 .build();
     }
 

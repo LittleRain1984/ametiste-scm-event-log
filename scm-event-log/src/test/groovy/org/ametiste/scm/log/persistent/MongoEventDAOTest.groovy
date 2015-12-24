@@ -1,12 +1,11 @@
 package org.ametiste.scm.log.persistent
 
-import com.mongodb.BasicDBObject
+import org.ametiste.scm.messaging.data.InstanceLifecycleEventGenerator
 import com.mongodb.DBCollection
-import org.ametiste.scm.messaging.data.InstanceStartupEventGenerator
 import org.ametiste.scm.messaging.data.event.Event
-import org.ametiste.scm.messaging.data.event.InstanceStartupEvent
+import org.ametiste.scm.messaging.data.event.InstanceLifecycleEvent
 import org.ametiste.scm.messaging.data.mongo.event.EventDocument
-import org.ametiste.scm.messaging.data.mongo.event.InstanceStartupEventDocument
+import org.ametiste.scm.messaging.data.mongo.event.InstanceLifecycleEventDocument
 import org.ametiste.scm.messaging.data.mongo.event.factory.DefaultEventToDocumentConverterMapFactory
 import org.ametiste.scm.messaging.data.mongo.event.factory.EventToDocumentConverterMapFactory
 import org.springframework.data.domain.Page
@@ -21,6 +20,7 @@ import static org.ametiste.scm.messaging.data.EventComparator.equals
 
 class MongoEventDAOTest extends Specification {
 
+    private static final InstanceLifecycleEventGenerator EVENT_GENERATOR = new InstanceLifecycleEventGenerator();
     private static final long COLLECTION_COUNT = 5L;
     private static final InstanceStartupEventGenerator EVENT_GENERATOR = new InstanceStartupEventGenerator();
 
@@ -168,14 +168,13 @@ class MongoEventDAOTest extends Specification {
     }
 
     def "findOne return correct event by id"() {
-        given: "some event"
-        InstanceStartupEvent event = EVENT_GENERATOR.generate()
+        InstanceLifecycleEvent event = EVENT_GENERATOR.generate()
 
         when: "request find operation"
         Event returnedEvent = eventDAO.findOne(event.getId())
 
         then: "mongo return correct event"
-        mongoOperations.findById(_ as UUID, EventDocument.class) >> { new InstanceStartupEventDocument(event) }
+        mongoOperations.findById(_ as UUID, EventDocument.class) >> { new InstanceLifecycleEventDocument(event) }
 
         and: "event is same"
         equals(returnedEvent, event)
