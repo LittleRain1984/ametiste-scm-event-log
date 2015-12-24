@@ -72,7 +72,7 @@ public class MongoEventDAO implements EventDAO {
     @Override
     public Collection<Event> save(Collection<Event> entities) {
         isTrue(entities != null, "The given collection of entities must not be null!");
-        entities.stream().map(this::convert).forEach(mongoOperations::save);
+        convert(entities).stream().forEach(mongoOperations::save);
         return entities;
     }
 
@@ -141,6 +141,7 @@ public class MongoEventDAO implements EventDAO {
 
     private Collection<EventDocument> convert(Collection<Event> events) {
         List<EventDocument> docs = events.stream()
+                .filter(Objects::nonNull)
                 .filter(event -> converterMap.containsKey(event.getClass()))
                 .map(e -> converterMap.get(e.getClass()).apply(e))
                 .collect(Collectors.toList());
